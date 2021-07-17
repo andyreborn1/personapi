@@ -1,4 +1,4 @@
-package com.nemowave.personapi.dto;
+package com.nemowave.personapi.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
