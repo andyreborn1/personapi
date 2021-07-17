@@ -2,13 +2,17 @@ package com.nemowave.personapi.services;
 
 import com.nemowave.personapi.dto.request.PersonDTO;
 import com.nemowave.personapi.dto.response.MessageResponseDTO;
+import com.nemowave.personapi.exception.PersonNotFoundException;
 import com.nemowave.personapi.mapper.PersonMapper;
 import com.nemowave.personapi.model.Person;
 import com.nemowave.personapi.repository.PersonRepository;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
@@ -28,8 +32,10 @@ public class PersonService {
                 .build();
     }
 
-    public List<Person> listAll() {
-        return personRepository.findAll();
+    public List<PersonDTO> listAll() {
+        List<Person> all = personRepository.findAll();
+        return all.stream()
+                .map(personMapper::toDTO).collect(Collectors.toList());
     }
 
     public MessageResponseDTO deleteById(long idPerson) {
@@ -39,10 +45,10 @@ public class PersonService {
                 .build();
     }
 
-    public MessageResponseDTO update(Person person) {
-        Person savedPerson = personRepository.save(person);
-        return MessageResponseDTO.builder()
-                .message("Person with ID " + savedPerson.getId()+" updated")
-                .build();
+
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = personRepository.findById(id)
+                .orElseThrow(()->new PersonNotFoundException(id));
+        return personMapper.toDTO(person);
     }
 }

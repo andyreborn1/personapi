@@ -2,7 +2,7 @@ package com.nemowave.personapi.controller;
 
 import com.nemowave.personapi.dto.request.PersonDTO;
 import com.nemowave.personapi.dto.response.MessageResponseDTO;
-import com.nemowave.personapi.model.Person;
+import com.nemowave.personapi.exception.PersonNotFoundException;
 import com.nemowave.personapi.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,13 +27,18 @@ public class PersonController {
         return personService.create(personDTO);
     }
 
+    @GetMapping("/{id}")
+    public PersonDTO findById(@PathVariable("id") Long id) throws PersonNotFoundException {
+        return  personService.findById(id);
+    }
+
     @DeleteMapping("/{idPerson}")
     public MessageResponseDTO deletePerson(@PathVariable("idPerson") long idPerson) {
         return personService.deleteById(idPerson);
     }
 
     @GetMapping
-    public List<Person> listAllPerson() {
+    public List<PersonDTO> listAllPerson() {
         return personService.listAll();
     }
 }
