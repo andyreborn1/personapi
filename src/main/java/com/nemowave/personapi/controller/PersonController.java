@@ -32,9 +32,10 @@ public class PersonController {
         return  personService.findById(id);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{idPerson}")
-    public MessageResponseDTO deletePerson(@PathVariable("idPerson") long idPerson) {
-        return personService.deleteById(idPerson);
+    public void deletePerson(@PathVariable("idPerson") long idPerson) throws PersonNotFoundException {
+        personService.deleteById(idPerson);
     }
 
     @GetMapping

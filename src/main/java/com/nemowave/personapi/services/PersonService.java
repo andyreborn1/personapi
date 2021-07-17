@@ -6,12 +6,10 @@ import com.nemowave.personapi.exception.PersonNotFoundException;
 import com.nemowave.personapi.mapper.PersonMapper;
 import com.nemowave.personapi.model.Person;
 import com.nemowave.personapi.repository.PersonRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,17 +36,19 @@ public class PersonService {
                 .map(personMapper::toDTO).collect(Collectors.toList());
     }
 
-    public MessageResponseDTO deleteById(long idPerson) {
+    public void deleteById(long idPerson) throws PersonNotFoundException {
+        verifyIfExists(idPerson);
         personRepository.deleteById(idPerson);
-        return MessageResponseDTO.builder()
-                .message("Person with ID " + idPerson + " deleted")
-                .build();
     }
 
 
     public PersonDTO findById(Long id) throws PersonNotFoundException {
-        Person person = personRepository.findById(id)
-                .orElseThrow(()->new PersonNotFoundException(id));
+        Person person = verifyIfExists(id);
         return personMapper.toDTO(person);
+    }
+
+    public Person verifyIfExists(Long id) throws PersonNotFoundException {
+        return personRepository.findById(id)
+                .orElseThrow(()->new PersonNotFoundException(id));
     }
 }
