@@ -1,0 +1,11 @@
+spring:
+  profiles: prod
+
+  h2:
+    console:
+      path: /h2
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
