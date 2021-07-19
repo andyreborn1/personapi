@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonService {
     PersonRepository personRepository;
+
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
     public MessageResponseDTO create(PersonDTO personDTO) {
