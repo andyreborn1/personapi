@@ -2,6 +2,7 @@
     url: "jdbc:postgresql://ec2-52-202-152-4.compute-1.amazonaws.com:5432/d5ddcp4qmu7imm"
     username: wojfdqtpfqetny
     password: b0780df8dd1ebf4e0c88fb808ada672bd71b93a2627fa91463123bbd7c09ebb5
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     show-sql: true
